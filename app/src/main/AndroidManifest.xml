@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.look.P74505730">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--Need these permissions to support call deflection report-->
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!--End call deflection report permissions-->
+
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="23" />
+
+
+    <application
+        android:name=".appExtender"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+
+        <!-- Liveperson Chat main activity -->
+        <activity
+            android:name="com.liveperson.mobile.android.ui.chat.ChatMainActivity"
+            android:label="@string/title_activity_lpmobile"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/Theme.Transparent">
+        </activity>
+
+        <!-- Main service that monitor the visit -->
+        <service android:enabled="true" android:name="com.liveperson.mobile.android.service.visit.VisitService" />
+
+        <!-- receiver to support network state changes -->
+        <receiver
+            android:name= "com.liveperson.mobile.android.networking.NetworkChangeReceiver"
+            android:label="NetworkStateReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <!--receivers to support call deflection report feature-->
+        <receiver android:name="com.liveperson.mobile.android.networking.OutgoingCallReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.liveperson.mobile.android.networking.CallDurationReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+
+
+</manifest>
